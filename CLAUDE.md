@@ -4,7 +4,7 @@ Guidance for Claude Code when working in this repository.
 
 ## Project
 
-Static one-page website for the Romanian Orthodox parish of Baden, Switzerland (services held in the Catholic church in Turgi). Astro 7, static output, four languages: `ro` at `/`, `de`, `en`, `fr` at `/<lang>/`. No client framework; one small inline script updates the service schedule in the browser. Deployed to GitHub Pages by `.github/workflows/deploy.yml`.
+Static one-page website for the Romanian Orthodox parish of Baden, Switzerland (services held in the Catholic church in Turgi). Astro 7, static output, four languages: `ro` at `/`, `de`, `en`, `fr` at `/<lang>/`. No client framework; one small inline script updates the service schedule in the browser. Deployed to https://bisericabaden.ch by Cloudflare Workers Builds (Worker `biserica-baden`, static assets only, config in `wrangler.jsonc`), which builds every push to `main` of github.com/biserica-baden/biserica-baden. DNS for bisericabaden.ch is on Cloudflare (registrar Hostpoint).
 
 The owner communicates in Romanian; reply in Romanian unless asked otherwise.
 
@@ -37,21 +37,15 @@ npm 11 may warn that `esbuild`'s postinstall is not covered by `allowScripts`. T
 - "Sunday after Pentecost" numbers must match the parish source or the BOR calendar (https://doxologia.ro/calendar-ortodox/YYYYMM). They are not consecutive in autumn (Lucan jump).
 - The parish source gives no house number for Weichlenstrasse, 5300 Turgi. Do not invent one.
 - `photoPublicationApproved` and `metropolisCrestPublicationApproved` may only be set to `true` after the owner explicitly confirms permission. The photo shows identifiable people, including children.
-- Do not change DNS for bisericabaden.ch or set a custom domain without explicit approval; that domain currently serves the parish's Sway page.
+- Do not change DNS for bisericabaden.ch or the Worker's custom domains without explicit approval.
+- Keep `wrangler.jsonc` as a pure static-assets config. Without it, `wrangler deploy` runs `astro add cloudflare`, which breaks the build (`No such module "chunks/sharp"`). Its `name` must match the Worker name in Cloudflare.
 
-## First deployment checklist
+## Deployment
 
-Work through these in order and confirm each with the owner before acting on GitHub:
-
-1. Ask for the GitHub account and repository name (suggested: `biserica-baden`). On a free GitHub plan Pages requires a **public** repository.
-2. Ask which name/email to use for commits and set them for this repository only (`git config user.name` / `git config user.email`). Do not assume a work email.
-3. Ask whether permission exists to publish the community photo and the MOREOM crest; set the two flags in `src/data/parish.ts` accordingly.
-4. Verify locally: `npm ci && npm run check && npm run build`.
-5. `git init -b main`, `git add -A`, check `git status` (no `node_modules/`, `dist/`, `.astro/`, `.env`), commit.
-6. Create the repository and push. With GitHub CLI: `gh auth status`, then `gh repo create <name> --public --source . --remote origin --push`. Without it, have the owner create an empty repository on github.com, then `git remote add origin https://github.com/<owner>/<name>.git` and `git push -u origin main`.
-7. Enable Pages with GitHub Actions as the source: `gh api -X POST repos/<owner>/<name>/pages -f build_type=workflow` (use `-X PUT` if Pages already exists), or **Settings → Pages → Source: GitHub Actions**.
-8. Run or re-run the workflow (`gh workflow run deploy.yml`, then `gh run watch`). A first run that started before Pages was enabled can fail at `configure-pages`; re-run it.
-9. Open `https://<owner>.github.io/<name>/` and its `/de/`, `/en/`, `/fr/` pages. Check icons load (base path), the schedule shows the next service first, the map loads and there is no horizontal scrolling on a phone-sized viewport.
+- Cloudflare Workers Builds: build command `npm run build`, deploy command `npx wrangler deploy`. It sets `WORKERS_CI`, so `astro.config.mjs` uses `https://bisericabaden.ch` as `site` (canonical URLs, hreflang).
+- Custom domains `bisericabaden.ch` and `www.bisericabaden.ch` are attached to the Worker under **Domains**; Cloudflare manages their DNS records and certificates.
+- Commits use the repository-local identity `biserica-baden` with the GitHub noreply address. Push with the GitHub CLI account `biserica-baden` (`gh auth status`; another account may also be logged in on this machine).
+- After a push, check the build in Cloudflare (**Workers & Pages → biserica-baden → Deployments**), then open https://bisericabaden.ch/ and `/de/`, `/en/`, `/fr/`.
 
 ## Routine monthly update
 

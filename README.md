@@ -1,6 +1,6 @@
 # Biserica Ortodoxă Română Baden — site static
 
-Site static, o singură pagină în patru limbi (RO, DE, EN, FR), construit cu [Astro](https://astro.build/) și publicat pe GitHub Pages.
+Site static, o singură pagină în patru limbi (RO, DE, EN, FR), construit cu [Astro](https://astro.build/) și publicat pe https://bisericabaden.ch prin Cloudflare Workers.
 
 - `/` — română · `/de/` — germană · `/en/` — engleză · `/fr/` — franceză
 - Secțiuni: fotografie, numele parohiei, hramurile, Mitropolia, **Programul Slujbelor**, **Adresa** (cu harta Google), **Contact** (footer).
@@ -15,7 +15,7 @@ Site static, o singură pagină în patru limbi (RO, DE, EN, FR), construit cu [
 | `src/styles/site.css` | stilul; paleta de culori e la începutul fișierului |
 | `src/lib/crest.ts` | pregătirea stemei MOREOM |
 | `public/image-sources.txt` | proveniența și licențele imaginilor |
-| `.github/workflows/deploy.yml` | publicarea automată pe GitHub Pages |
+| `wrangler.jsonc` | configurarea publicării pe Cloudflare (doar fișiere statice) |
 
 ## Rulare locală
 
@@ -77,21 +77,13 @@ metropolisCrestPublicationApproved: false,
 
 Cât timp valorile sunt `false`, site-ul publicat **nu** afișează fotografia comunității (pe care apar persoane identificabile, inclusiv copii) și nici stema MOREOM. Setați-le pe `true` doar după ce parohia confirmă că pot fi publicate. Imaginea Sfântului Atanasie este în domeniul public.
 
-## Publicare pe GitHub Pages
+## Publicare
 
-1. Creați un repository pe GitHub și urcați proiectul pe ramura `main`. Pe un cont GitHub gratuit, Pages funcționează doar cu un repository **public**.
-2. **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-3. Fiecare `push` pe `main` publică automat site-ul (tab-ul **Actions** arată progresul).
-4. Adresa: `https://<utilizator>.github.io/<repository>/`.
+Codul stă în repository-ul GitHub `biserica-baden/biserica-baden`. Cloudflare (Workers & Pages → **biserica-baden**) este legat de el: la fiecare `push` pe `main` construiește site-ul (`npm run build`) și îl publică (`npx wrangler deploy`). Progresul se vede la **Deployments**.
 
-### Domeniu propriu (opțional)
-
-Domeniul `bisericabaden.ch` afișează acum pagina Sway. Pentru a-l muta pe acest site, schimbați DNS-ul abia când site-ul nou este gata:
-
-1. **Settings → Pages → Custom domain**: `bisericabaden.ch`, apoi bifați **Enforce HTTPS** după validare.
-2. La furnizorul domeniului: înregistrări `A` pentru `bisericabaden.ch` către `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` și `CNAME` pentru `www` către `<utilizator>.github.io`.
-
-Workflow-ul preia automat adresa și calea din setările Pages; nu trebuie modificat codul.
+- Domeniile `bisericabaden.ch` și `www.bisericabaden.ch` sunt legate de worker la **Domains**. Cloudflare administrează DNS-ul și certificatul HTTPS.
+- Domeniul este înregistrat la Hostpoint, cu nameserverele Cloudflare.
+- `wrangler.jsonc` trebuie păstrat: fără el, Cloudflare încearcă să transforme proiectul într-o aplicație pe server și build-ul eșuează.
 
 ## Confidențialitate
 

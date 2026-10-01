@@ -1,7 +1,7 @@
 // Cloudflare Workers Builds: publish the static Astro output in dist/ as-is.
 // With this file present, `wrangler deploy` skips its framework auto-setup.
 {
-  "name": "bisericabaden",
+  "name": "biserica-baden",
   "compatibility_date": "2026-10-01",
   "assets": {
     "directory": "./dist"

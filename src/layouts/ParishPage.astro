@@ -1,0 +1,315 @@
+---
+import { Image } from 'astro:assets';
+import '@fontsource/noto-serif/latin-400.css';
+import '@fontsource/noto-serif/latin-ext-400.css';
+import '@fontsource/noto-serif/latin-700.css';
+import '@fontsource/noto-serif/latin-ext-700.css';
+import '../styles/site.css';
+import Icon from '../components/Icon.astro';
+import BrandIcon from '../components/BrandIcon.astro';
+import Ornament from '../components/Ornament.astro';
+import { crestImage as renderCrest } from '../lib/crest';
+import { copy } from '../data/copy';
+import { parish, schedule, scheduleEntries } from '../data/parish';
+import { languages, type Language } from '../data/types';
+
+interface Props {
+  language: Language;
+}
+
+const { language } = Astro.props;
+const t = copy[language];
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const route = (locale: Language) => `${base}${locale === 'ro' ? '' : `${locale}/`}`;
+const isLocalPreview = import.meta.env.LOCAL_PREVIEW === 'true';
+const showPhoto = isLocalPreview || parish.photoPublicationApproved;
+const showCrest = isLocalPreview || parish.metropolisCrestPublicationApproved;
+// Build-only processing avoids emitting the unapproved source into public builds.
+const crestImage = showCrest ? await renderCrest() : undefined;
+const canonical = new URL(route(language), Astro.site);
+
+const capitalise = (text: string) => text.charAt(0).toLocaleUpperCase(t.locale) + text.slice(1);
+const dayFormatter = new Intl.DateTimeFormat(t.locale, {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  timeZone: schedule.timeZone,
+});
+const period = new Intl.DateTimeFormat(t.locale, { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(
+  new Date(Date.UTC(schedule.year, schedule.month - 1, 15)),
+);
+// The client script re-evaluates this on every visit; the build-time state is the no-JS fallback.
+const buildTime = Date.now();
+const buildDay = new Intl.DateTimeFormat('en-CA', {
+  timeZone: schedule.timeZone,
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+}).format(buildTime);
+const nextIndex = scheduleEntries.findIndex((entry) => entry.end.getTime() > buildTime);
+const entries = scheduleEntries.map((entry, index) => ({
+  ...entry,
+  dayLabel: capitalise(dayFormatter.format(entry.start)),
+  occasionLabel:
+    entry.occasion.type === 'sundayAfterPentecost'
+      ? t.sundayAfterPentecost(entry.occasion.number)
+      : `${t.feasts[entry.occasion.feast]}${entry.occasion.vigil ? ` · ${t.vigil}` : ''}`,
+  past: entry.end.getTime() <= buildTime,
+  next: index === nextIndex,
+  today: index === nextIndex && entry.date === buildDay,
+}));
+const hasUpcoming = nextIndex !== -1;
+const year = new Date().getFullYear();
+---
+<!doctype html>
+<html lang={language}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>{t.pageTitle}</title>
+    <meta name="description" content={t.description} />
+    {isLocalPreview && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="icon" type="image/png" sizes="32x32" href={`${base}icons/athanasius-32.png`} />
+    <link rel="icon" type="image/png" sizes="64x64" href={`${base}icons/athanasius-64.png`} />
+    <link rel="apple-touch-icon" sizes="192x192" href={`${base}icons/athanasius-192.png`} />
+    <link rel="canonical" href={canonical} />
+    {languages.map((locale) => (
+      <link rel="alternate" hreflang={locale} href={new URL(route(locale), Astro.site)} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={new URL(route('ro'), Astro.site)} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={t.pageTitle} />
+    <meta property="og:description" content={t.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={t.locale.replace('-', '_')} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t.skipLink}</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href={route(language)} aria-label={t.parishName}>
+          <img class="brand-icon" src={`${base}icons/athanasius-256.png`} width="48" height="48" alt="" />
+          <span class="brand-words">{t.brandLineOne}<br />{t.brandLineTwo}</span>
+        </a>
+        <nav class="primary-nav" aria-label={t.mainNav}>
+          <a href="#program">{t.navSchedule}</a>
+          <a href="#adresa">{t.navAddress}</a>
+          <a href="#contact">{t.navContact}</a>
+        </nav>
+        <nav class="languages" aria-label={t.languageNav}>
+          {languages.map((locale) => (
+            <a
+              href={route(locale)}
+              lang={locale}
+              hreflang={locale}
+              aria-label={copy[locale].languageName}
+              aria-current={locale === language ? 'page' : undefined}
+              title={copy[locale].languageName}
+            >
+              {locale.toUpperCase()}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      {showPhoto && (
+        <div class="hero">
+          <Image
+            src={parish.photoSource}
+            width={1600}
+            height={1067}
+            widths={[640, 1024, 1600]}
+            sizes="100vw"
+            format="webp"
+            quality={78}
+            alt={t.photoAlt}
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+      )}
+
+      <section class:list={['identity', { 'identity-no-hero': !showPhoto }]} aria-labelledby="parish-name">
+        <h1 id="parish-name" class="rise rise-1">{t.parishName}</h1>
+        <div class="patronage rise rise-2">
+          <p class="patron-label">{t.patronsTitle}</p>
+          <ul class="patron-saints">
+            {t.patronSaints.map((name) => <li>{name}</li>)}
+          </ul>
+        </div>
+        <Ornament class="rise rise-3" />
+        <div class="metropolis rise rise-3">
+          {crestImage && (
+            <img class="metropolis-crest" src={crestImage} width="120" height="145" alt={t.moreomAlt} />
+          )}
+          <p class="metropolis-name">{t.jurisdiction}</p>
+        </div>
+      </section>
+
+      <section id="program" class="section schedule-section" aria-labelledby="schedule-title">
+        <div class="section-heading reveal">
+          <h2 id="schedule-title">{t.scheduleTitle}</h2>
+          <p class="section-period">{capitalise(period)}</p>
+        </div>
+
+        <ol class="timeline" data-schedule hidden={!hasUpcoming}>
+          {entries.map((entry) => (
+            <li
+              class:list={[
+                'timeline-item',
+                'reveal',
+                { 'is-next': entry.next, 'is-today': entry.today, 'has-change': entry.changedTime },
+              ]}
+              data-day={entry.date}
+              data-start={entry.start.toISOString()}
+              data-end={entry.end.toISOString()}
+              hidden={entry.past}
+            >
+              <span class="timeline-dot" aria-hidden="true"></span>
+              <article class="service-card">
+                <p class="badges">
+                  <span class="badge badge-next">{t.nextService}</span>
+                  <span class="badge badge-today">{t.today}</span>
+                  {entry.changedTime && <span class="badge badge-changed">{t.differentTime}</span>}
+                </p>
+                <h3 class="service-day"><time datetime={entry.date}>{entry.dayLabel}</time></h3>
+                <p class="service-occasion">{entry.occasionLabel}</p>
+                <ul class="service-times">
+                  {entry.services.map((service) => (
+                    <li class:list={{ 'service-main': service.kind === 'liturgy' }}>
+                      <time datetime={`${entry.date}T${service.time}`}>{service.time}</time>
+                      <span>{t.services[service.kind]}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            </li>
+          ))}
+        </ol>
+
+        <div class="schedule-empty" data-schedule-empty hidden={hasUpcoming}>
+          <Icon name="clock" size={28} />
+          <p>{t.scheduleEmpty}</p>
+          <a class="button" href={`tel:${parish.telephone}`}><Icon name="phone" size={18} />{parish.telephoneDisplay}</a>
+        </div>
+      </section>
+
+      <section id="adresa" class="section address-section" aria-labelledby="address-title">
+        <div class="section-heading reveal">
+          <h2 id="address-title">{t.addressTitle}</h2>
+        </div>
+        <address class="address-card reveal">
+          <span class="venue">{t.venueName}</span>
+          <span>{parish.street}</span>
+          <span>{parish.postcode} {parish.town}, {t.country}</span>
+        </address>
+        <p class="location-text reveal">{t.locationText}</p>
+        <div class="map-band">
+          <iframe
+            src={parish.mapEmbed(language)}
+            title={t.mapTitle}
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </section>
+    </main>
+
+    <footer id="contact" class="site-footer" aria-labelledby="contact-title">
+      <div class="footer-main">
+        <img class="footer-icon" src={`${base}icons/athanasius-256.png`} width="88" height="88" alt="" loading="lazy" />
+        <h2 id="contact-title" class="footer-priest">{t.priestName}</h2>
+        <a class="footer-phone" href={`tel:${parish.telephone}`}>
+          <Icon name="phone" size={20} /><span class="visually-hidden">{t.phoneLabel}: </span>{parish.telephoneDisplay}
+        </a>
+        <nav class="footer-social" aria-label={t.socialsLabel}>
+          <a href={parish.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" title="WhatsApp"><BrandIcon name="whatsapp" /></a>
+          <a href={parish.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook"><BrandIcon name="facebook" /></a>
+          <a href={parish.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><BrandIcon name="instagram" /></a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p>© {year} {t.parishName}. {t.rights}</p>
+      </div>
+    </footer>
+
+    <script>
+      const timeZone = 'Europe/Zurich';
+      const override = Date.parse(new URLSearchParams(window.location.search).get('now') ?? '');
+      const now = () => (Number.isNaN(override) ? Date.now() : override);
+      const dayFormatter = new Intl.DateTimeFormat('en-CA', {
+        timeZone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      });
+
+      const updateSchedule = () => {
+        const list = document.querySelector<HTMLElement>('[data-schedule]');
+        if (!list) return;
+        const instant = now();
+        const today = dayFormatter.format(instant);
+        let next: HTMLElement | null = null;
+        for (const item of list.querySelectorAll<HTMLElement>('[data-end]')) {
+          const past = Date.parse(item.dataset.end ?? '') <= instant;
+          item.hidden = past;
+          item.classList.remove('is-next', 'is-today');
+          if (!past && !next) next = item;
+        }
+        if (next) {
+          next.classList.add('is-next');
+          next.classList.toggle('is-today', next.dataset.day === today);
+        }
+        list.hidden = !next;
+        const empty = document.querySelector<HTMLElement>('[data-schedule-empty]');
+        if (empty) empty.hidden = Boolean(next);
+      };
+
+      updateSchedule();
+      window.setInterval(updateSchedule, 60_000);
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) updateSchedule();
+      });
+
+      if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches && 'IntersectionObserver' in window) {
+        document.documentElement.classList.add('reveal-on');
+        const observer = new IntersectionObserver(
+          (observed) => {
+            for (const entry of observed) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -6% 0px', threshold: 0.08 },
+        );
+        document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
+
+        const timeline = document.querySelector<HTMLElement>('.timeline');
+        if (timeline) {
+          let queued = false;
+          const paintThread = () => {
+            queued = false;
+            const box = timeline.getBoundingClientRect();
+            const progress = Math.min(1, Math.max(0, (window.innerHeight * 0.65 - box.top) / Math.max(box.height, 1)));
+            timeline.style.setProperty('--progress', progress.toFixed(3));
+          };
+          const queue = () => {
+            if (!queued) {
+              queued = true;
+              window.requestAnimationFrame(paintThread);
+            }
+          };
+          window.addEventListener('scroll', queue, { passive: true });
+          window.addEventListener('resize', queue);
+          paintThread();
+        }
+      }
+    </script>
+  </body>
+</html>

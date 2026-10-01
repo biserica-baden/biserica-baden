@@ -1,0 +1,22 @@
+Saint Athanasius the Great
+Source requested: https://ro.wikipedia.org/wiki/Fi%C8%99ier:Sainta15.jpg
+Canonical source: https://commons.wikimedia.org/wiki/File:Ikone_Athanasius_von_Alexandria.jpg
+Image: https://upload.wikimedia.org/wikipedia/commons/2/26/Ikone_Athanasius_von_Alexandria.jpg
+Wikimedia Commons metadata identifies this image as public domain (PD-Art).
+The local circular PNG icons are resized, cropped derivatives.
+
+MOREOM coat of arms
+Source: https://www.mitropolia.eu/uploads/image/Logouri/STEMA%20MOREOM%202018.jpg
+The local PNG preserves the complete official source image as rendered.
+The site displays it in its natural colours, with a 3 px edge trimmed to
+remove a thin frame line (src\lib\crest.ts).
+No republication licence was established. Included in the local preview;
+public builds omit it unless permission is explicitly recorded.
+
+WhatsApp, Facebook and Instagram marks
+Source: Simple Icons 13 (https://simpleicons.org/), CC0-1.0.
+
+Parish photograph
+Source: https://sway.cloud.microsoft/X37U2Yn8EICzXBw4
+No republication licence was established. Included in the local preview;
+public builds omit it unless permission is explicitly recorded.

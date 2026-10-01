@@ -1,0 +1,35 @@
+---
+interface Props {
+  name: 'pin' | 'phone' | 'mail' | 'arrow' | 'external' | 'clock' | 'cross' | 'chat' | 'facebook' | 'instagram';
+  size?: number;
+}
+
+const { name, size = 20 } = Astro.props;
+const paths: Record<Props['name'], string> = {
+  pin: 'M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0ZM15 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
+  phone:
+    'M8 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-4l-5-2-2 2a14 14 0 0 1-6-6l2-2-2-5Z',
+  mail: 'M3 5h18v14H3V5Zm0 1 9 7 9-7',
+  arrow: 'M4 12h16m-6-6 6 6-6 6',
+  external: 'M14 3h7v7m0-7L10 14M10 3H3v18h18v-7',
+  clock: 'M12 8v5l3 2M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0Z',
+  cross: 'M12 2v20M7 6h10M4 11h16m-8 6 8 3',
+  chat: 'M21 11a9 9 0 0 1-9 9 10 10 0 0 1-4-.8L3 21l1.5-4.5A9 9 0 1 1 21 11Z',
+  facebook: 'M14 22V13h3l.5-4H14V7c0-1.2.4-2 2-2h2V1h-3c-3 0-5 2-5 5v3H7v4h3v9',
+  instagram: 'M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 10a5 5 0 1 1-10 0 5 5 0 0 1 10 0Zm1-6h.01',
+};
+---
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path d={paths[name]} />
+</svg>

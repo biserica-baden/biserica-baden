@@ -1,0 +1,19 @@
+---
+import type { GetStaticPaths } from 'astro';
+import ParishPage from '../../layouts/ParishPage.astro';
+import type { Language } from '../../data/types';
+import { languages } from '../../data/types';
+
+export const getStaticPaths = (() =>
+  languages.filter((language) => language !== 'ro').map((language) => ({
+    params: { language },
+    props: { language },
+  }))
+) satisfies GetStaticPaths;
+
+interface Props {
+  language: Language;
+}
+const { language } = Astro.props;
+---
+<ParishPage language={language} />

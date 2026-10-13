@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import '@fontsource/noto-serif/latin-400.css';
 import '@fontsource/noto-serif/latin-ext-400.css';
 import '@fontsource/noto-serif/latin-700.css';
@@ -26,7 +26,16 @@ const showPhoto = isLocalPreview || parish.photoPublicationApproved;
 const showCrest = isLocalPreview || parish.metropolisCrestPublicationApproved;
 // Build-only processing avoids emitting the unapproved source into public builds.
 const crestImage = showCrest ? await renderCrest() : undefined;
+const communityPhoto = showPhoto ? (await import('../assets/parish-community.jpg')).default : undefined;
 const canonical = new URL(route(language), Astro.site);
+const siteUrl = new URL(route('ro'), Astro.site);
+
+// Link previews (WhatsApp, Facebook, …) use a 1200×630 crop of the community photo,
+// falling back to the saint icon when the photo is not approved for publication.
+const shareImage = communityPhoto
+  ? await getImage({ src: communityPhoto, width: 1200, height: 630, fit: 'cover', format: 'jpg', quality: 80 })
+  : undefined;
+const shareImageUrl = new URL(shareImage ? shareImage.src : `${base}icons/athanasius-256.png`, Astro.site);
 
 const capitalise = (text: string) => text.charAt(0).toLocaleUpperCase(t.locale) + text.slice(1);
 const dayFormatter = new Intl.DateTimeFormat(t.locale, {
@@ -59,6 +68,58 @@ const entries = scheduleEntries.map((entry, index) => ({
   today: index === nextIndex && entry.date === buildDay,
 }));
 const hasUpcoming = nextIndex !== -1;
+
+// schema.org data for search engines: the parish as a Church, and each listed service day as an Event.
+const address = {
+  '@type': 'PostalAddress',
+  streetAddress: parish.street,
+  postalCode: parish.postcode,
+  addressLocality: parish.town,
+  addressRegion: 'AG',
+  addressCountry: 'CH',
+};
+const venue = {
+  '@type': 'Place',
+  name: `${parish.officialName} · ${parish.venueLocalName}`,
+  address,
+  geo: { '@type': 'GeoCoordinates', latitude: parish.latitude, longitude: parish.longitude },
+};
+const churchId = new URL('#church', siteUrl).href;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Church',
+      '@id': churchId,
+      name: t.parishName,
+      alternateName: [...new Set(languages.map((locale) => copy[locale].parishName))].filter(
+        (name) => name !== t.parishName,
+      ),
+      description: t.description,
+      url: canonical.href,
+      image: shareImageUrl.href,
+      telephone: parish.telephone,
+      address,
+      geo: venue.geo,
+      hasMap: parish.mapLink,
+      sameAs: [parish.facebook, parish.instagram],
+    },
+    ...scheduleEntries.map((entry, index) => ({
+      '@type': 'Event',
+      name: `${entries[index].occasionLabel} · ${t.parishName}`,
+      description: entry.services.map((service) => `${service.time} ${t.services[service.kind]}`).join(', '),
+      startDate: entry.start.toISOString(),
+      endDate: entry.end.toISOString(),
+      eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      isAccessibleForFree: true,
+      inLanguage: 'ro',
+      image: shareImageUrl.href,
+      location: venue,
+      organizer: { '@type': 'Organization', name: t.parishName, url: siteUrl.href },
+    })),
+  ],
+};
 const year = new Date().getFullYear();
 ---
 <!doctype html>
@@ -72,6 +133,7 @@ const year = new Date().getFullYear();
     {isLocalPreview && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" type="image/png" sizes="32x32" href={`${base}icons/athanasius-32.png`} />
     <link rel="icon" type="image/png" sizes="64x64" href={`${base}icons/athanasius-64.png`} />
+    <link rel="icon" type="image/png" sizes="192x192" href={`${base}icons/athanasius-192.png`} />
     <link rel="apple-touch-icon" sizes="192x192" href={`${base}icons/athanasius-192.png`} />
     <link rel="canonical" href={canonical} />
     {languages.map((locale) => (
@@ -83,6 +145,17 @@ const year = new Date().getFullYear();
     <meta property="og:description" content={t.description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={t.locale.replace('-', '_')} />
+    {languages
+      .filter((locale) => locale !== language)
+      .map((locale) => <meta property="og:locale:alternate" content={copy[locale].locale.replace('-', '_')} />)}
+    <meta property="og:site_name" content={t.parishName} />
+    <meta property="og:image" content={shareImageUrl} />
+    {shareImage && <meta property="og:image:width" content="1200" />}
+    {shareImage && <meta property="og:image:height" content="630" />}
+    <meta property="og:image:alt" content={shareImage ? t.photoAlt : t.parishName} />
+    <meta name="twitter:card" content={shareImage ? 'summary_large_image' : 'summary'} />
+    <link rel="sitemap" type="application/xml" href={`${base}sitemap.xml`} />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body>
     <a class="skip-link" href="#main">{t.skipLink}</a>
@@ -118,9 +191,7 @@ const year = new Date().getFullYear();
       {showPhoto && (
         <div class="hero">
           <Image
-            src={parish.photoSource}
-            width={1600}
-            height={1067}
+            src={communityPhoto!}
             widths={[640, 1024, 1600]}
             sizes="100vw"
             format="webp"

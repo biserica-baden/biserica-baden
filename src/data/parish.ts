@@ -9,6 +9,9 @@ export const parish = {
   street: 'Weichlenstrasse',
   postcode: '5300',
   town: 'Turgi',
+  // From the Google Maps place below.
+  latitude: 47.490515,
+  longitude: 8.252084,
   telephone: '+41789097998',
   telephoneDisplay: '+41 78 909 79 98',
   email: 'biserica.baden@gmail.com',
@@ -21,6 +24,7 @@ export const parish = {
   mapEmbed: (language: string) =>
     `https://www.google.com/maps/embed?pb=${mapPlace}!3m2!1s${language}!2sch!4v1736632069342!5m2!1s${language}!2sch`,
   mapLink: 'https://maps.google.com/?cid=15400832135455458152',
+  // Stored locally as src/assets/parish-community.jpg (downloaded 2026-10-13).
   photoSource:
     'https://eus-cdn.sway.static.microsoft/s/X37U2Yn8EICzXBw4/images/BQrP1ognp2oO3W?quality=1600&allowAnimation=false',
   photoPublicationApproved: true,

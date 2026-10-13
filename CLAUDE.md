@@ -30,6 +30,7 @@ npm 11 may warn that `esbuild`'s postinstall is not covered by `allowScripts`. T
 - `src/styles/site.css` — palette variables at the top (modelled on basilicasanpietro.va: white/light-grey bands, gold `#bca461`, deep gold `#7d6a30` for text links, charcoal `#212529`, footer `#1f1f21`). Keep WCAG AA contrast; `#bca461` is for fills and decoration, not text on white.
 - `src/lib/crest.ts` — MOREOM crest, natural colours, inlined as a data URL at build time so the source file is never emitted when the crest is not approved.
 - `public/image-sources.txt` — image provenance. Update it when images change.
+- SEO: `src/pages/sitemap.xml.ts` and `src/pages/robots.txt.ts` (built from `languages`); schema.org JSON-LD (Church + one Event per schedule entry) and Open Graph tags in `ParishPage.astro`. The link-preview image is a 1200×630 crop of `src/assets/parish-community.jpg`. The parish email is not shown on the site, so it is not in the JSON-LD either.
 
 ## Content rules
 

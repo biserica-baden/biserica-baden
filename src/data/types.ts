@@ -2,7 +2,7 @@ export const languages = ['de', 'ro', 'en', 'fr'] as const;
 export type Language = (typeof languages)[number];
 
 export type ServiceKind = 'vespersLitia' | 'matins' | 'liturgy';
-export type FeastKey = 'protection';
+export type FeastKey = 'protection' | 'paraskeva';
 
 export interface Copy {
   languageName: string;
@@ -30,7 +30,11 @@ export interface Copy {
   feasts: Record<FeastKey, string>;
   vigil: string;
   sundayAfterPentecost: (number: number) => string;
-  scheduleEmpty: string;
+  scheduleEmpty: string;
+
+
+
+
   addressTitle: string;
   venueName: string;
   country: string;

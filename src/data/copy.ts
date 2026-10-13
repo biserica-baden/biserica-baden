@@ -61,7 +61,10 @@ export const copy: Record<Language, Copy> = {
       matins: 'Utrenia',
       liturgy: 'Sfânta Liturghie',
     },
-    feasts: { protection: 'Acoperământul Maicii Domnului' },
+    feasts: {
+      protection: 'Acoperământul Maicii Domnului',
+      paraskeva: 'Sfânta Cuvioasă Parascheva',
+    },
     vigil: 'Priveghere',
     sundayAfterPentecost: (number) =>
       number === 1 ? 'Duminica I după Rusalii' : `Duminica a ${roman(number)}-a după Rusalii`,
@@ -111,7 +114,10 @@ export const copy: Record<Language, Copy> = {
       matins: 'Morgengottesdienst (Utrenie)',
       liturgy: 'Göttliche Liturgie',
     },
-    feasts: { protection: 'Schutz der Gottesgebärerin' },
+    feasts: {
+      protection: 'Schutz der Gottesgebärerin',
+      paraskeva: 'Heilige Paraskeva von Iași',
+    },
     vigil: 'Vigil',
     sundayAfterPentecost: (number) => `${number}. Sonntag nach Pfingsten`,
     scheduleEmpty:
@@ -160,7 +166,10 @@ export const copy: Record<Language, Copy> = {
       matins: 'Matins',
       liturgy: 'Divine Liturgy',
     },
-    feasts: { protection: 'Protection of the Mother of God' },
+    feasts: {
+      protection: 'Protection of the Mother of God',
+      paraskeva: 'Saint Paraskeva of Iași',
+    },
     vigil: 'Vigil',
     sundayAfterPentecost: (number) => `${englishOrdinal(number)} Sunday after Pentecost`,
     scheduleEmpty:
@@ -209,7 +218,10 @@ export const copy: Record<Language, Copy> = {
       matins: 'Matines',
       liturgy: 'Divine Liturgie',
     },
-    feasts: { protection: 'Protection de la Mère de Dieu' },
+    feasts: {
+      protection: 'Protection de la Mère de Dieu',
+      paraskeva: 'Sainte Parascève de Iași',
+    },
     vigil: 'Vigile',
     sundayAfterPentecost: (number) =>
       number === 1 ? '1er dimanche après la Pentecôte' : `${number}e dimanche après la Pentecôte`,

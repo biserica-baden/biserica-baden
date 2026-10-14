@@ -64,6 +64,7 @@ export const copy: Record<Language, Copy> = {
     feasts: {
       protection: 'Acoperământul Maicii Domnului',
       paraskeva: 'Sfânta Cuvioasă Parascheva',
+      pantanassa: 'Icoana Maicii Domnului „Pantanassa” · Sfânta Magdalena de la Mălaința',
     },
     vigil: 'Priveghere',
     sundayAfterPentecost: (number) =>
@@ -117,6 +118,7 @@ export const copy: Record<Language, Copy> = {
     feasts: {
       protection: 'Schutz der Gottesgebärerin',
       paraskeva: 'Heilige Paraskeva von Iași',
+      pantanassa: 'Ikone der Gottesgebärerin „Pantanassa“ · Heilige Magdalena von Mălaința',
     },
     vigil: 'Vigil',
     sundayAfterPentecost: (number) => `${number}. Sonntag nach Pfingsten`,
@@ -169,6 +171,7 @@ export const copy: Record<Language, Copy> = {
     feasts: {
       protection: 'Protection of the Mother of God',
       paraskeva: 'Saint Paraskeva of Iași',
+      pantanassa: 'Icon of the Mother of God “Pantanassa” · Saint Magdalena of Mălaința',
     },
     vigil: 'Vigil',
     sundayAfterPentecost: (number) => `${englishOrdinal(number)} Sunday after Pentecost`,
@@ -221,6 +224,7 @@ export const copy: Record<Language, Copy> = {
     feasts: {
       protection: 'Protection de la Mère de Dieu',
       paraskeva: 'Sainte Parascève de Iași',
+      pantanassa: 'Icône de la Mère de Dieu « Pantanassa » · Sainte Magdalena de Mălaința',
     },
     vigil: 'Vigile',
     sundayAfterPentecost: (number) =>

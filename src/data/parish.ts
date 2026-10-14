@@ -48,7 +48,7 @@ interface ScheduleEntry {
 }
 
 // Source: the parish Sway, "Programul slujbelor pentru luna octombrie";
-// 2026-10-13 vigil from Părintele Adrian's announcement.
+// 2026-10-13 and 2026-10-14 vigils from Părintele Adrian's announcements.
 // Sunday numbering cross-checked with doxologia.ro/calendar-ortodox/202610.
 export const schedule: {
   timeZone: string;
@@ -92,6 +92,15 @@ export const schedule: {
         { kind: 'vespersLitia', time: '18:00' },
         { kind: 'matins', time: '19:30' },
         { kind: 'liturgy', time: '20:30' },
+      ],
+    },
+    {
+      date: '2026-10-14',
+      occasion: { type: 'feast', feast: 'pantanassa', vigil: true },
+      services: [
+        { kind: 'vespersLitia', time: '18:00' },
+        { kind: 'matins', time: '19:30' },
+        { kind: 'liturgy', time: '20:00' },
       ],
     },
     {

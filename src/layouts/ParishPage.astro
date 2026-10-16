@@ -62,7 +62,9 @@ const entries = scheduleEntries.map((entry, index) => ({
   occasionLabel:
     entry.occasion.type === 'sundayAfterPentecost'
       ? t.sundayAfterPentecost(entry.occasion.number)
-      : `${t.feasts[entry.occasion.feast]}${entry.occasion.vigil ? ` · ${t.vigil}` : ''}`,
+      : entry.occasion.type === 'confession'
+        ? t.confessionOccasion
+        : `${t.feasts[entry.occasion.feast]}${entry.occasion.vigil ? ` · ${t.vigil}` : ''}`,
   past: entry.end.getTime() <= buildTime,
   next: index === nextIndex,
   today: index === nextIndex && entry.date === buildDay,

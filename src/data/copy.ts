@@ -60,6 +60,7 @@ export const copy: Record<Language, Copy> = {
       vespersLitia: 'Vecernia cu Litie',
       matins: 'Utrenia',
       liturgy: 'Sfânta Liturghie',
+      confession: 'Spovedanie',
     },
     feasts: {
       protection: 'Acoperământul Maicii Domnului',
@@ -67,6 +68,7 @@ export const copy: Record<Language, Copy> = {
       pantanassa: 'Icoana Maicii Domnului „Pantanassa” · Sfânta Magdalena de la Mălaința',
     },
     vigil: 'Priveghere',
+    confessionOccasion: 'Taina Spovedaniei · vă rugăm să-l anunțați pe Părintele Adrian',
     sundayAfterPentecost: (number) =>
       number === 1 ? 'Duminica I după Rusalii' : `Duminica a ${roman(number)}-a după Rusalii`,
     scheduleEmpty:
@@ -114,6 +116,7 @@ export const copy: Record<Language, Copy> = {
       vespersLitia: 'Vesper mit Litija',
       matins: 'Morgengottesdienst (Utrenie)',
       liturgy: 'Göttliche Liturgie',
+      confession: 'Beichte',
     },
     feasts: {
       protection: 'Schutz der Gottesgebärerin',
@@ -121,6 +124,7 @@ export const copy: Record<Language, Copy> = {
       pantanassa: 'Ikone der Gottesgebärerin „Pantanassa“ · Heilige Magdalena von Mălaința',
     },
     vigil: 'Vigil',
+    confessionOccasion: 'Sakrament der Beichte · bitte bei Pfarrer Adrian anmelden',
     sundayAfterPentecost: (number) => `${number}. Sonntag nach Pfingsten`,
     scheduleEmpty:
       'Der Gottesdienstplan für die nächste Zeit wird in Kürze veröffentlicht. Für Auskünfte können Sie Pfarrer Adrian anrufen.',
@@ -167,6 +171,7 @@ export const copy: Record<Language, Copy> = {
       vespersLitia: 'Vespers with Litiya',
       matins: 'Matins',
       liturgy: 'Divine Liturgy',
+      confession: 'Confession',
     },
     feasts: {
       protection: 'Protection of the Mother of God',
@@ -174,6 +179,7 @@ export const copy: Record<Language, Copy> = {
       pantanassa: 'Icon of the Mother of God “Pantanassa” · Saint Magdalena of Mălaința',
     },
     vigil: 'Vigil',
+    confessionOccasion: 'Holy Confession · please let Father Adrian know in advance',
     sundayAfterPentecost: (number) => `${englishOrdinal(number)} Sunday after Pentecost`,
     scheduleEmpty:
       'The schedule for the coming period will be published soon. For information, please call Father Adrian.',
@@ -220,6 +226,7 @@ export const copy: Record<Language, Copy> = {
       vespersLitia: 'Vêpres avec litie',
       matins: 'Matines',
       liturgy: 'Divine Liturgie',
+      confession: 'Confession',
     },
     feasts: {
       protection: 'Protection de la Mère de Dieu',
@@ -227,6 +234,7 @@ export const copy: Record<Language, Copy> = {
       pantanassa: 'Icône de la Mère de Dieu « Pantanassa » · Sainte Magdalena de Mălaința',
     },
     vigil: 'Vigile',
+    confessionOccasion: 'Sacrement de la confession · merci de prévenir le père Adrian',
     sundayAfterPentecost: (number) =>
       number === 1 ? '1er dimanche après la Pentecôte' : `${number}e dimanche après la Pentecôte`,
     scheduleEmpty:

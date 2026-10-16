@@ -38,7 +38,8 @@ export const parish = {
 
 type Occasion =
   | { type: 'sundayAfterPentecost'; number: number }
-  | { type: 'feast'; feast: FeastKey; vigil: boolean };
+  | { type: 'feast'; feast: FeastKey; vigil: boolean }
+  | { type: 'confession' };
 
 interface ScheduleEntry {
   date: string;
@@ -48,7 +49,7 @@ interface ScheduleEntry {
 }
 
 // Source: the parish Sway, "Programul slujbelor pentru luna octombrie";
-// 2026-10-13 and 2026-10-14 vigils from Părintele Adrian's announcements.
+// 2026-10-13 and 2026-10-14 vigils and 2026-10-17 confession from Părintele Adrian's announcements.
 // Sunday numbering cross-checked with doxologia.ro/calendar-ortodox/202610.
 export const schedule: {
   timeZone: string;
@@ -102,6 +103,11 @@ export const schedule: {
         { kind: 'matins', time: '19:30' },
         { kind: 'liturgy', time: '20:00' },
       ],
+    },
+    {
+      date: '2026-10-17',
+      occasion: { type: 'confession' },
+      services: [{ kind: 'confession', time: '09:30' }],
     },
     {
       date: '2026-10-18',

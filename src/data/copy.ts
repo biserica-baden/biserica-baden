@@ -61,6 +61,7 @@ export const copy: Record<Language, Copy> = {
       matins: 'Utrenia',
       liturgy: 'Sfânta Liturghie',
       confession: 'Spovedanie',
+      venerationParaskevaVestment: 'Închinare la veșmântul Sfintei Parascheva',
     },
     feasts: {
       protection: 'Acoperământul Maicii Domnului',
@@ -117,6 +118,7 @@ export const copy: Record<Language, Copy> = {
       matins: 'Morgengottesdienst (Utrenie)',
       liturgy: 'Göttliche Liturgie',
       confession: 'Beichte',
+      venerationParaskevaVestment: 'Verehrung des Gewandes der heiligen Paraskeva',
     },
     feasts: {
       protection: 'Schutz der Gottesgebärerin',
@@ -172,6 +174,7 @@ export const copy: Record<Language, Copy> = {
       matins: 'Matins',
       liturgy: 'Divine Liturgy',
       confession: 'Confession',
+      venerationParaskevaVestment: 'Veneration of the vestment of Saint Paraskeva',
     },
     feasts: {
       protection: 'Protection of the Mother of God',
@@ -227,6 +230,7 @@ export const copy: Record<Language, Copy> = {
       matins: 'Matines',
       liturgy: 'Divine Liturgie',
       confession: 'Confession',
+      venerationParaskevaVestment: 'Vénération du vêtement de sainte Parascève',
     },
     feasts: {
       protection: 'Protection de la Mère de Dieu',

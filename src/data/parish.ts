@@ -49,7 +49,8 @@ interface ScheduleEntry {
 }
 
 // Source: the parish Sway, "Programul slujbelor pentru luna octombrie";
-// 2026-10-13 and 2026-10-14 vigils and 2026-10-17 confession from Părintele Adrian's announcements.
+// 2026-10-13 and 2026-10-14 vigils and 2026-10-17 confession from Părintele Adrian's announcements;
+// 2026-10-18 veneration of Saint Paraskeva's vestment from the parish Facebook page, 2026-10-16.
 // Sunday numbering cross-checked with doxologia.ro/calendar-ortodox/202610.
 export const schedule: {
   timeZone: string;
@@ -115,6 +116,7 @@ export const schedule: {
       services: [
         { kind: 'matins', time: '08:30' },
         { kind: 'liturgy', time: '10:30' },
+        { kind: 'venerationParaskevaVestment', time: '12:30' },
       ],
     },
     {

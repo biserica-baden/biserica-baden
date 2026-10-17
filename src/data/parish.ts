@@ -46,6 +46,8 @@ interface ScheduleEntry {
   occasion: Occasion;
   changedTime?: boolean;
   services: { kind: ServiceKind; time: string }[];
+  // Icon of the saint or feast, shown on the service card (src/assets/icons/).
+  icon?: ImageMetadata;
 }
 
 // Source: the parish Sway, "Programul slujbelor pentru luna octombrie";

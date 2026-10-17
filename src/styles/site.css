@@ -574,6 +574,21 @@ h3 {
   font-size: clamp(1.45rem, 1.25rem + 0.9vw, 1.75rem);
 }
 
+.service-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.service-icon {
+  flex: none;
+  width: 72px;
+  height: auto;
+  border: 1px solid var(--cp-border);
+  border-radius: 8px;
+}
+
 .service-occasion {
   margin: 4px 0 0;
   color: var(--cp-gold-text);

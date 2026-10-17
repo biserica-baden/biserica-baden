@@ -248,8 +248,15 @@ const year = new Date().getFullYear();
                   <span class="badge badge-today">{t.today}</span>
                   {entry.changedTime && <span class="badge badge-changed">{t.differentTime}</span>}
                 </p>
-                <h3 class="service-day"><time datetime={entry.date}>{entry.dayLabel}</time></h3>
-                <p class="service-occasion">{entry.occasionLabel}</p>
+                <div class="service-heading">
+                  <div>
+                    <h3 class="service-day"><time datetime={entry.date}>{entry.dayLabel}</time></h3>
+                    <p class="service-occasion">{entry.occasionLabel}</p>
+                  </div>
+                  {entry.icon && (
+                    <Image class="service-icon" src={entry.icon} width={144} alt={entry.occasionLabel} />
+                  )}
+                </div>
                 <ul class="service-times">
                   {entry.services.map((service) => (
                     <li class:list={{ 'service-main': service.kind === 'liturgy' }}>

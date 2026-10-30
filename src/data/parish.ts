@@ -53,7 +53,8 @@ interface ScheduleEntry {
 // Source: the parish Sway, "Programul slujbelor pentru luna octombrie";
 // 2026-10-13 and 2026-10-14 vigils and 2026-10-17 confession from Părintele Adrian's announcements;
 // 2026-10-18 and 2026-10-25 veneration of Saint Paraskeva's vestment from the parish Facebook page, 2026-10-16 and 2026-10-23;
-// 2026-10-19 vigil for Saint Gerasimos and 2026-10-26 Saint Demetrius from Părintele Adrian's announcements.
+// 2026-10-19 vigil for Saint Gerasimos and 2026-10-26 Saint Demetrius from Părintele Adrian's announcements;
+// 2026-11-01 from the parish Facebook page, 2026-10-29.
 // Sunday numbering cross-checked with doxologia.ro/calendar-ortodox/202610.
 export const schedule: {
   timeZone: string;
@@ -63,7 +64,7 @@ export const schedule: {
   entries: ScheduleEntry[];
 } = {
   timeZone: 'Europe/Zurich',
-  month: 10,
+  month: 11,
   year: 2026,
   serviceDurationMinutes: 150,
   entries: [
@@ -146,6 +147,14 @@ export const schedule: {
       services: [
         { kind: 'akathist', time: '06:00' },
         { kind: 'liturgy', time: '06:30' },
+      ],
+    },
+    {
+      date: '2026-11-01',
+      occasion: { type: 'sundayAfterPentecost', number: 22 },
+      services: [
+        { kind: 'matins', time: '08:30' },
+        { kind: 'liturgy', time: '10:30' },
       ],
     },
   ],

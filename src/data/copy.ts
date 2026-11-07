@@ -63,6 +63,7 @@ export const copy: Record<Language, Copy> = {
       akathist: 'Acatist',
       confession: 'Spovedanie',
       venerationParaskevaVestment: 'Închinare la veșmântul Sfintei Parascheva',
+      memorialAgape: 'Pomenirea celor adormiți, agapă',
     },
     feasts: {
       protection: 'Acoperământul Maicii Domnului',
@@ -123,6 +124,7 @@ export const copy: Record<Language, Copy> = {
       akathist: 'Akathistos-Hymnos',
       confession: 'Beichte',
       venerationParaskevaVestment: 'Verehrung des Gewandes der heiligen Paraskeva',
+      memorialAgape: 'Gedenken an die Entschlafenen, Agape',
     },
     feasts: {
       protection: 'Schutz der Gottesgebärerin',
@@ -182,6 +184,7 @@ export const copy: Record<Language, Copy> = {
       akathist: 'Akathist',
       confession: 'Confession',
       venerationParaskevaVestment: 'Veneration of the vestment of Saint Paraskeva',
+      memorialAgape: 'Commemoration of the departed, agape meal',
     },
     feasts: {
       protection: 'Protection of the Mother of God',
@@ -241,6 +244,7 @@ export const copy: Record<Language, Copy> = {
       akathist: 'Acathiste',
       confession: 'Confession',
       venerationParaskevaVestment: 'Vénération du vêtement de sainte Parascève',
+      memorialAgape: 'Commémoraison des défunts, agape',
     },
     feasts: {
       protection: 'Protection de la Mère de Dieu',

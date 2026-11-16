@@ -166,6 +166,12 @@ export const schedule: {
         { kind: 'memorialAgape', time: '12:30' },
       ],
     },
+    {
+      // From the owner, 2026-11-16.
+      date: '2026-11-16',
+      occasion: { type: 'feast', feast: 'matthew', vigil: false },
+      services: [{ kind: 'liturgy', time: '18:00' }],
+    },
   ],
 };
 

@@ -2,7 +2,7 @@ export const languages = ['de', 'ro', 'en', 'fr'] as const;
 export type Language = (typeof languages)[number];
 
 export type ServiceKind = 'vespersLitia' | 'matins' | 'liturgy' | 'confession' | 'venerationParaskevaVestment' | 'akathist' | 'memorialAgape';
-export type FeastKey = 'protection' | 'paraskeva' | 'pantanassa' | 'gerasimos' | 'demetrius';
+export type FeastKey = 'protection' | 'paraskeva' | 'pantanassa' | 'gerasimos' | 'demetrius' | 'presentationTheotokos';
 
 export interface Copy {
   languageName: string;

@@ -1,4 +1,4 @@
-import type { FeastKey, ServiceKind } from './types';
+import type { FeastKey, NoteKey, ServiceKind } from './types';
 
 const mapPlace =
   '!1m18!1m12!1m3!1d2695.9691128742124!2d8.252084077510897!3d47.49051507117945!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47906b00609b4fa1:0xd5babf3ae73e4368!2zQmlzZXJpY2EgT3J0b2RveMSDIFJvbcOibsSDIEJhZGVuIEVsdmXIm2lh!5e0';
@@ -39,13 +39,17 @@ export const parish = {
 type Occasion =
   | { type: 'sundayAfterPentecost'; number: number }
   | { type: 'feast'; feast: FeastKey; vigil: boolean }
-  | { type: 'confession' };
+  | { type: 'confession' }
+  // No service in Baden that day; `services` stays empty and the card shows all day.
+  | { type: 'noService' };
 
 interface ScheduleEntry {
   date: string;
   occasion: Occasion;
   changedTime?: boolean;
   services: { kind: ServiceKind; time: string }[];
+  // Extra line shown under the services (texts in copy.ts `notes`).
+  note?: NoteKey;
   // Icon of the saint or feast, shown on the service card (src/assets/icons/).
   icon?: ImageMetadata;
 }
@@ -55,7 +59,8 @@ interface ScheduleEntry {
 // 2026-10-18 and 2026-10-25 veneration of Saint Paraskeva's vestment from the parish Facebook page, 2026-10-16 and 2026-10-23;
 // 2026-10-19 vigil for Saint Gerasimos and 2026-10-26 Saint Demetrius from Părintele Adrian's announcements;
 // 2026-11-01 from the parish Facebook page, 2026-10-29; 2026-11-08 from the parish Facebook page, 2026-11-04;
-// 2026-11-21 from the parish Facebook page, 2026-11-19.
+// 2026-11-21 from the parish Facebook page, 2026-11-19;
+// 2026-11-22 no service in Baden, from Părintele Adrian's announcement of 2026-11-21.
 // Sunday numbering cross-checked with doxologia.ro/calendar-ortodox/202610 and /202611.
 export const schedule: {
   timeZone: string;
@@ -175,6 +180,12 @@ export const schedule: {
         { kind: 'liturgy', time: '08:00' },
       ],
     },
+    {
+      date: '2026-11-22',
+      occasion: { type: 'noService' },
+      services: [],
+      note: 'servingInBasel',
+    },
   ],
 };
 
@@ -222,11 +233,22 @@ export const scheduleEntries = schedule.entries.map((entry) => {
       throw new Error(`Invalid service time on ${entry.date}: ${service.time}`);
     }
   }
-  const starts = entry.services.map((service) =>
-    zonedTimeToUtc(entry.date, service.time, schedule.timeZone),
-  );
-  const start = starts[0];
-  const end = new Date(starts[starts.length - 1].getTime() + schedule.serviceDurationMinutes * 60_000);
+  if ((entry.services.length === 0) !== (entry.occasion.type === 'noService')) {
+    throw new Error(`${entry.date}: only a no-service day may have no services.`);
+  }
+  let start: Date;
+  let end: Date;
+  if (entry.occasion.type === 'noService') {
+    // Shown for the whole day.
+    start = zonedTimeToUtc(entry.date, '00:00', schedule.timeZone);
+    end = new Date(start.getTime() + 24 * 60 * 60_000);
+  } else {
+    const starts = entry.services.map((service) =>
+      zonedTimeToUtc(entry.date, service.time, schedule.timeZone),
+    );
+    start = starts[0];
+    end = new Date(starts[starts.length - 1].getTime() + schedule.serviceDurationMinutes * 60_000);
+  }
   if (entry.occasion.type === 'sundayAfterPentecost' && weekdayIn(start, schedule.timeZone) !== 'Sunday') {
     throw new Error(`${entry.date} is labelled as a Sunday but is not one.`);
   }

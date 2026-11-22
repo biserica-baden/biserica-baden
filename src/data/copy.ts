@@ -75,6 +75,10 @@ export const copy: Record<Language, Copy> = {
     },
     vigil: 'Priveghere',
     confessionOccasion: 'Taina Spovedaniei · vă rugăm să-l anunțați pe Părintele Adrian',
+    noServiceOccasion: 'Nu avem slujbă la Baden · nu putem primi biserica',
+    notes: {
+      servingInBasel: 'Părintele Adrian slujește la Parohia Basel: Stockackerstrasse 36, Reinach.',
+    },
     sundayAfterPentecost: (number) =>
       number === 1 ? 'Duminica I după Rusalii' : `Duminica a ${roman(number)}-a după Rusalii`,
     scheduleEmpty:
@@ -137,6 +141,10 @@ export const copy: Record<Language, Copy> = {
     },
     vigil: 'Vigil',
     confessionOccasion: 'Sakrament der Beichte · bitte bei Pfarrer Adrian anmelden',
+    noServiceOccasion: 'Kein Gottesdienst in Baden · die Kirche steht uns nicht zur Verfügung',
+    notes: {
+      servingInBasel: 'Pfarrer Adrian feiert den Gottesdienst in der Pfarrei Basel: Stockackerstrasse 36, Reinach.',
+    },
     sundayAfterPentecost: (number) => `${number}. Sonntag nach Pfingsten`,
     scheduleEmpty:
       'Der Gottesdienstplan für die nächste Zeit wird in Kürze veröffentlicht. Für Auskünfte können Sie Pfarrer Adrian anrufen.',
@@ -198,6 +206,10 @@ export const copy: Record<Language, Copy> = {
     },
     vigil: 'Vigil',
     confessionOccasion: 'Holy Confession · please let Father Adrian know in advance',
+    noServiceOccasion: 'No service in Baden · the church is not available to us',
+    notes: {
+      servingInBasel: 'Father Adrian is serving at the Basel parish: Stockackerstrasse 36, Reinach.',
+    },
     sundayAfterPentecost: (number) => `${englishOrdinal(number)} Sunday after Pentecost`,
     scheduleEmpty:
       'The schedule for the coming period will be published soon. For information, please call Father Adrian.',
@@ -259,6 +271,10 @@ export const copy: Record<Language, Copy> = {
     },
     vigil: 'Vigile',
     confessionOccasion: 'Sacrement de la confession · merci de prévenir le père Adrian',
+    noServiceOccasion: 'Pas d’office à Baden · l’église n’est pas disponible',
+    notes: {
+      servingInBasel: 'Le père Adrian célèbre à la paroisse de Bâle : Stockackerstrasse 36, Reinach.',
+    },
     sundayAfterPentecost: (number) =>
       number === 1 ? '1er dimanche après la Pentecôte' : `${number}e dimanche après la Pentecôte`,
     scheduleEmpty:

@@ -4,6 +4,8 @@ export type Language = (typeof languages)[number];
 export type ServiceKind = 'vespersLitia' | 'matins' | 'liturgy' | 'confession' | 'venerationParaskevaVestment' | 'akathist' | 'memorialAgape';
 export type FeastKey = 'protection' | 'paraskeva' | 'pantanassa' | 'gerasimos' | 'demetrius' | 'presentationTheotokos';
 
+export type NoteKey = 'servingInBasel';
+
 export interface Copy {
   languageName: string;
   locale: string;
@@ -30,6 +32,8 @@ export interface Copy {
   feasts: Record<FeastKey, string>;
   vigil: string;
   confessionOccasion: string;
+  noServiceOccasion: string;
+  notes: Record<NoteKey, string>;
   sundayAfterPentecost: (number: number) => string;
   scheduleEmpty: string;
 

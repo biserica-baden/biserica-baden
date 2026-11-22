@@ -64,7 +64,9 @@ const entries = scheduleEntries.map((entry, index) => ({
       ? t.sundayAfterPentecost(entry.occasion.number)
       : entry.occasion.type === 'confession'
         ? t.confessionOccasion
-        : `${t.feasts[entry.occasion.feast]}${entry.occasion.vigil ? ` · ${t.vigil}` : ''}`,
+        : entry.occasion.type === 'noService'
+          ? t.noServiceOccasion
+          : `${t.feasts[entry.occasion.feast]}${entry.occasion.vigil ? ` · ${t.vigil}` : ''}`,
   past: entry.end.getTime() <= buildTime,
   next: index === nextIndex,
   today: index === nextIndex && entry.date === buildDay,
@@ -106,7 +108,7 @@ const structuredData = {
       hasMap: parish.mapLink,
       sameAs: [parish.facebook, parish.instagram],
     },
-    ...scheduleEntries.map((entry, index) => ({
+    ...scheduleEntries.flatMap((entry, index) => entry.occasion.type === 'noService' ? [] : [{
       '@type': 'Event',
       name: `${entries[index].occasionLabel} · ${t.parishName}`,
       description: entry.services.map((service) => `${service.time} ${t.services[service.kind]}`).join(', '),
@@ -119,7 +121,7 @@ const structuredData = {
       image: shareImageUrl.href,
       location: venue,
       organizer: { '@type': 'Organization', name: t.parishName, url: siteUrl.href },
-    })),
+    }]),
   ],
 };
 const year = new Date().getFullYear();
@@ -234,7 +236,12 @@ const year = new Date().getFullYear();
               class:list={[
                 'timeline-item',
                 'reveal',
-                { 'is-next': entry.next, 'is-today': entry.today, 'has-change': entry.changedTime },
+                {
+                  'is-next': entry.next,
+                  'is-today': entry.today,
+                  'has-change': entry.changedTime,
+                  'is-no-service': entry.occasion.type === 'noService',
+                },
               ]}
               data-day={entry.date}
               data-start={entry.start.toISOString()}
@@ -257,14 +264,17 @@ const year = new Date().getFullYear();
                     <Image class="service-icon" src={entry.icon} width={144} alt={entry.occasionLabel} />
                   )}
                 </div>
-                <ul class="service-times">
-                  {entry.services.map((service) => (
-                    <li class:list={{ 'service-main': service.kind === 'liturgy' }}>
-                      <time datetime={`${entry.date}T${service.time}`}>{service.time}</time>
-                      <span>{t.services[service.kind]}</span>
-                    </li>
-                  ))}
-                </ul>
+                {entry.services.length > 0 && (
+                  <ul class="service-times">
+                    {entry.services.map((service) => (
+                      <li class:list={{ 'service-main': service.kind === 'liturgy' }}>
+                        <time datetime={`${entry.date}T${service.time}`}>{service.time}</time>
+                        <span>{t.services[service.kind]}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {entry.note && <p class="service-note">{t.notes[entry.note]}</p>}
               </article>
             </li>
           ))}

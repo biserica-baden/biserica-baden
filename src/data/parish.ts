@@ -59,8 +59,7 @@ interface ScheduleEntry {
 // 2026-10-18 and 2026-10-25 veneration of Saint Paraskeva's vestment from the parish Facebook page, 2026-10-16 and 2026-10-23;
 // 2026-10-19 vigil for Saint Gerasimos and 2026-10-26 Saint Demetrius from Părintele Adrian's announcements;
 // 2026-11-01 from the parish Facebook page, 2026-10-29; 2026-11-08 from the parish Facebook page, 2026-11-04;
-// 2026-11-21 from the parish Facebook page, 2026-11-19;
-// 2026-11-22 no service in Baden, from Părintele Adrian's announcement of 2026-11-21.
+// 2026-11-21 from the parish Facebook page, 2026-11-19.
 // Sunday numbering cross-checked with doxologia.ro/calendar-ortodox/202610 and /202611.
 export const schedule: {
   timeZone: string;
@@ -179,12 +178,6 @@ export const schedule: {
         { kind: 'matins', time: '07:00' },
         { kind: 'liturgy', time: '08:00' },
       ],
-    },
-    {
-      date: '2026-11-22',
-      occasion: { type: 'noService' },
-      services: [],
-      note: 'servingInBasel',
     },
   ],
 };
